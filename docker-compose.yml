@@ -1,0 +1,56 @@
+---
+version: "3.7"
+
+services:
+  ansible:
+    image: cytopia/ansible:2.9-tools
+    container_name: ansible
+    environment:
+      - USER=ansible
+    volumes:
+      - ${PWD-.}/playbooks:/data
+      - ssh-keys:/home/ansible/.ssh
+
+  web1:
+    build: ansible-node
+    image: ansible-node
+    container_name: web1
+    volumes:
+      - ssh-keys:/home/ansible/.ssh
+    ports:
+      - "22"
+      - "8080:80"
+
+  web2:
+    build: ansible-node
+    image: ansible-node
+    container_name: web2
+    volumes:
+      - ssh-keys:/home/ansible/.ssh
+    ports:
+      - "22"
+      - "8081:80"
+
+  web3:
+    build: ansible-node
+    image: ansible-node
+    container_name: web3
+    volumes:
+      - ssh-keys:/home/ansible/.ssh
+    ports:
+      - "22"
+      - "8082:80"
+
+  db1:
+    build: ansible-node
+    image: ansible-node
+    container_name: db1
+    volumes:
+      - ssh-keys:/home/ansible/.ssh
+    ports:
+      - "22"
+      - "27017:27017"
+
+volumes:
+  ssh-keys:
+    name: ansible-ssh-keys
