@@ -1,0 +1,19 @@
+---
+- hosts: web1
+  become: yes
+  tasks:
+    # Nginx packages are available from the EPEL repository, so we need to enable that first...
+    - name: Enable EPEL repository
+      yum:
+        name: epel-release
+        state: present
+    - name: Install Nginx
+      yum:
+        name: nginx
+        state: present
+    - name: Copy index page
+      copy:
+        src: hello-world.html
+        dest: /usr/share/nginx/html/index.html
+    - name: Start Nginx
+      shell: /usr/sbin/nginx
